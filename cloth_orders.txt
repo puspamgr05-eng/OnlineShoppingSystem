@@ -1,0 +1,9 @@
+Order ID: 1 | Items: Girls Kurti, Girls Top, | Final Total: Rs 3300.0
+Order ID: 1 | Items: Boys T-Shirt, Girls Saree, | Final Total: Rs 7200.0
+Order ID: 1 | Items: Girls Saree, Boys Jacket, | Final Total: Rs 9975.0
+Order ID: 1 | Items: Girls Saree, Boys Jacket, | Final Total: Rs 9975.0
+Order ID: 1 | Items: Girls Saree, Boys T-Shirt, | Final Total: Rs 7200.0
+Order ID: 1 | Items: Boys Jeans, Girls Kurti, | Final Total: Rs 4300.0
+Order ID: 1 | Items: Girls Kurti, Girls Saree, Girls Top, | Final Total: Rs 9300.0
+Order ID: 1 | Items: Girls Kurti, Girls Top, | Final Total: Rs 3300.0
+Order ID: 1 | Items: Boys Jeans, Girls Saree, Boys Jacket, | Final Total: Rs 12350.0
