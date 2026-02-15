@@ -172,7 +172,7 @@ public class Main {
         shop.addProduct(new Product(5, "Boys Jacket", "Boys", 4500));
         shop.addProduct(new Product(6, "Girls Top", "Girls", 1500));
 
-        Customer customer = new Customer(101, "Rabin", "98XXXXXXXX");
+        Customer customer = new Customer(101, "Puspa", "98XXXXXXXX");
         customer.viewProducts(shop.getProducts());
 
         Order order = new Order(1);
