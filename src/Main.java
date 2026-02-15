@@ -10,7 +10,7 @@ interface OrderOperations {
 }
 
 interface Payment {
-    void makePayment(double amount) throws PaymentException;
+    void makePayment(double amount, String method) throws PaymentException;
 }
 
 // ---------------- CUSTOM EXCEPTION ----------------
@@ -53,11 +53,11 @@ class Customer extends Person implements Payment {
     }
 
     @Override
-    public void makePayment(double amount) throws PaymentException {
+    public void makePayment(double amount, String method) throws PaymentException {
         if (amount <= 0) {
             throw new PaymentException("Invalid payment amount!");
         }
-        System.out.println("Payment successful: Rs " + amount);
+        System.out.println("Payment successful: Rs " + amount + " via " + method);
     }
 }
 
@@ -99,19 +99,13 @@ class Order {
     public double calculateTotal() {
         double total = 0;
         for (Product p : products) total += p.getPrice();
-
-        // 5% Discount if total > 10000
-        if (total > 10000) {
-            total = total - (total * 0.05);
-        }
+        if (total > 10000) total *= 0.95; // 5% discount
         return total;
     }
 
     public String toFileString() {
         String data = "Order ID: " + orderId + " | Items: ";
-        for (Product p : products) {
-            data += p.getProductName() + ", ";
-        }
+        for (Product p : products) data += p.getProductName() + ", ";
         data += "| Final Total: Rs " + calculateTotal();
         return data;
     }
@@ -119,17 +113,11 @@ class Order {
 
 // ---------------- SHOP ----------------
 class ClothingShop implements OrderOperations {
-
     private ArrayList<Product> products = new ArrayList<>();
     private ArrayList<Order> orders = new ArrayList<>();
 
-    public void addProduct(Product product) {
-        products.add(product);
-    }
-
-    public ArrayList<Product> getProducts() {
-        return products;
-    }
+    public void addProduct(Product product) { products.add(product); }
+    public ArrayList<Product> getProducts() { return products; }
 
     @Override
     public void placeOrder(Order order) {
@@ -159,17 +147,12 @@ class FileManager {
 // ---------------- MULTITHREADING ----------------
 class OrderProcessor extends Thread {
     private Order order;
-
-    public OrderProcessor(Order order) {
-        this.order = order;
-    }
+    public OrderProcessor(Order order) { this.order = order; }
 
     @Override
     public void run() {
         System.out.println("Processing order...");
-        try {
-            Thread.sleep(2000);
-        } catch (InterruptedException e) { }
+        try { Thread.sleep(2000); } catch (InterruptedException e) { }
         System.out.println("Order processed. Final Amount: Rs " + order.calculateTotal());
     }
 }
@@ -181,7 +164,7 @@ public class Main {
         Scanner sc = new Scanner(System.in);
         ClothingShop shop = new ClothingShop();
 
-        // Add Boys & Girls Clothes
+        // Add Products
         shop.addProduct(new Product(1, "Boys T-Shirt", "Boys", 1200));
         shop.addProduct(new Product(2, "Boys Jeans", "Boys", 2500));
         shop.addProduct(new Product(3, "Girls Kurti", "Girls", 1800));
@@ -190,7 +173,6 @@ public class Main {
         shop.addProduct(new Product(6, "Girls Top", "Girls", 1500));
 
         Customer customer = new Customer(101, "Rabin", "98XXXXXXXX");
-
         customer.viewProducts(shop.getProducts());
 
         Order order = new Order(1);
@@ -209,14 +191,16 @@ public class Main {
                     break;
                 }
             }
-
             if (!found) System.out.println("Invalid choice.");
         }
 
         shop.placeOrder(order);
 
+        System.out.print("Enter payment method (Cash/Online): ");
+        String paymentMethod = sc.next();
+
         try {
-            customer.makePayment(order.calculateTotal());
+            customer.makePayment(order.calculateTotal(), paymentMethod);
         } catch (PaymentException e) {
             System.out.println(e.getMessage());
         }
